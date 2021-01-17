@@ -1,0 +1,49 @@
+body {
+    background-color: #f3f3f3;
+}
+.site-page-header {
+    background-color: #fff;
+  border: 1px solid rgb(235, 237, 240);
+}
+.logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-row-rtl .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.site-layout-background {
+  background: #fff;
+}
+.layout_display_rigth{
+  display: flex;
+  justify-content: flex-end;
+  float: right;
+}
+.ant-layout-header {
+  background: #404040 !important;
+}
+.ant-menu-dark.ant-menu-horizontal {
+  border-bottom-color: #404040 !important;
+}
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+  background: #404040 !important;
+}
+#menu_button:hover{
+  background-color: transparent !important;
+}
+.anticon{
+  display: flex !important ;
+  align-items: center !important ;
+  justify-content: center !important ;
+}
+.btn_custom{
+  background-color: #404040 !important;
+  color: #fff !important ;
+}
