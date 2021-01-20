@@ -17,10 +17,13 @@ import '../styles/app.css';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AuthContext from './contexts/AuthContext';
+import CustomerPage from './pages/CustomerPage';
 import CustomersPage from './pages/CustomersPage';
 import HomePage from './pages/HomePage';
+import InvoicePage from './pages/InvoicePage';
 import InvoicesPage from './pages/IvoicesPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RgisterPage';
 import AuthAPI from './services/authAPI';
 
 
@@ -36,11 +39,14 @@ const App = () => {
         <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated}}>
             <HashRouter>
                 <NavbarWhitRouter />
-                <main className="container pt-5">
+                <main className="container pt-5 pb-5">
                     <Switch>
                         <Route path="/login" component={LoginPage}/>
-                        <PrivateRoute path="/invoices" component={InvoicesPage}/>
-                        <PrivateRoute path="/customers" component={CustomersPage}/>
+                        <Route path="/register" component={RegisterPage}/>
+                        <PrivateRoute path="/invoices/:id" component={InvoicePage}/>
+                        <PrivateRoute exact path="/invoices" component={InvoicesPage}/>
+                        <PrivateRoute path="/customers/:id" component={CustomerPage}/>
+                        <PrivateRoute exact path="/customers" component={CustomersPage}/>
                         <Route path="/" component={HomePage}/>
                     </Switch>
                 </main>

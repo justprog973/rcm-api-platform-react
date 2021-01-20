@@ -1,15 +1,16 @@
-import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined, PlusCircleTwoTone } from '@ant-design/icons';
 import { Button, Card, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PaginationCustom from '../components/PaginationCustom';
 import customersAPI from '../services/customersAPI';
 
 const { Meta } = Card;
 const { Search } = Input;
 
-const CustomersPage = props => {
+const CustomersPage = ({history}) => {
 
-    const [customers,setCustomer] = useState([]);
+    const [customers,setCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState('');
 
@@ -19,7 +20,8 @@ const CustomersPage = props => {
     const fetchCustomer = async () => {
         try{
             const data = await customersAPI.findAll();
-            setCustomer(data);
+            setCustomers(data);
+            console.log(data);
         } catch( error ){
             console.log(error.response);
         }
@@ -37,12 +39,12 @@ const CustomersPage = props => {
     const handleDelete = async id =>{
 
         const orginalCustomers = [...customers];
-        setCustomer(customers.filter(customer => customer.id !== id));
+        setCustomers(customers.filter(customer => customer.id !== id));
 
         try {
             await customersAPI.delete(id);
         }catch(error){
-            setCustomer(orginalCustomers);
+            setCustomers(orginalCustomers);
         }
     }
 
@@ -72,12 +74,12 @@ const CustomersPage = props => {
      */
     const handlePageChange = page => setCurrentPage(page);
 
-    const itemsPerpage = 6;
+    const itemsPerPage = 9;
 
     /**
      * filter the customers in function of the serach
      */
-    const filteredCustomer = customers.filter( 
+    const filteredCustomers = customers.filter( 
         c => 
             c.firstName.toLowerCase().includes(search.toLowerCase()) || 
             c.lastName.toLowerCase().includes(search.toLowerCase()) ||
@@ -88,29 +90,32 @@ const CustomersPage = props => {
     /**
      * Paginated the data
      */
-    const paginatedCustomer = PaginationCustom.getData(
-        filteredCustomer,
+    const paginatedCustomers = PaginationCustom.getData(
+        filteredCustomers,
         currentPage, 
-        itemsPerpage
+        itemsPerPage
     );
 
     return ( <>
-                <h1>Liste des client</h1>
+                <div className="d-flex justify-content-between align-items-center">
+                    <h1>Liste des client</h1>
+                    <Link to="/customers/new" className="ant-btn ant-btn-primary ant-btn-lg">Ajouter un client</Link>
+                </div>
                 <div className="row mb-4">
                     <div className="col-4">
                         <Search value={search} onChange={handleSearch} placeholder="input search text" size="middle" 
-                                enterButton={<Button loading={!filteredCustomer.length} icon={<SearchOutlined />} />} />
+                                enterButton={<Button loading={!filteredCustomers.length} icon={<SearchOutlined />} />} />
                     </div>
                 </div>
                 <div className="row">
                     {
-                        paginatedCustomer.map( customer => 
+                        paginatedCustomers.map( customer => 
                                 <div className="col-4 mb-3" key={customer.id}>
                                     <Card
                                     style={{ width: 300 }}
                                     actions={[
                                     <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" />,
+                                    <EditOutlined key="edit" onClick={() => { history.replace(`/customers/${customer.id}`)}} />,
                                     <Button disabled={customer.invoices.length > 0} onClick={() => handleDelete(customer.id)}  
                                     icon={<DeleteOutlined key="ellipsis" />} shape="circle" danger/>
                                     ]}
@@ -127,8 +132,8 @@ const CustomersPage = props => {
                     }
                 </div>
                 {
-                    itemsPerpage < filteredCustomer.length &&
-                    <PaginationCustom currentPage={currentPage} length={filteredCustomer.length} onPageChange={handlePageChange} />
+                    itemsPerPage < filteredCustomers.length &&
+                    <PaginationCustom currentPage={currentPage} length={filteredCustomers.length} itemsPerPage={itemsPerPage} onPageChange={handlePageChange} />
                 }
             </>);
 }

@@ -2,6 +2,7 @@ import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined } from '@
 import { Button, Card, Input } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PaginationCustom from '../components/PaginationCustom';
 import invoicesAPI from '../services/invoicesAPI';
 
@@ -23,7 +24,7 @@ const STATUS_LABELS = {
  /**
      * Get all invoices in API 
      */
-const InvoicesPage = props => {
+const InvoicesPage = ({history}) => {
     
     const [invoices, setInvoices] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -92,7 +93,7 @@ const InvoicesPage = props => {
      */
     const handlePageChange = page => setCurrentPage(page);
 
-    const itemsPerpage = 9;
+    const itemsPerPage =9;
 
     const handleDelete = async id => {
         const originalInvoices = [...invoices];
@@ -113,12 +114,15 @@ const InvoicesPage = props => {
     const paginatedInvoices = PaginationCustom.getData(
         filteredInvoices,
         currentPage, 
-        itemsPerpage
+        itemsPerPage
     );
 
     return (  
         <>
+        <div className="d-flex justify-content-between align-items-center">
             <h1> List des factures</h1>
+            <Link to="/invoices/new" className="ant-btn ant-btn-primary ant-btn-lg">Créer une facture</Link>
+        </div>
 
             <div className="row mb-4">
                     <div className="col-4">
@@ -134,7 +138,7 @@ const InvoicesPage = props => {
                                         style={{ width: 300 }}
                                         actions={[
                                         <SettingOutlined key="setting" />,
-                                        <EditOutlined key="edit" />,
+                                        <EditOutlined key="edit" onClick={ () => history.replace(`/invoices/${invoice.id}`) } />,
                                         <Button
                                         onClick={() => handleDelete(invoice.id)}   
                                         icon={<DeleteOutlined key="ellipsis" />} shape="circle" danger/>
@@ -151,9 +155,9 @@ const InvoicesPage = props => {
                                     )
                         }
             </div>
-            {
-                    itemsPerpage < filteredInvoices.length &&
-                    <PaginationCustom currentPage={currentPage} length={filteredInvoices.length} onPageChange={handlePageChange} />
+                {
+                    itemsPerPage < filteredInvoices.length &&
+                    <PaginationCustom currentPage={currentPage} length={filteredInvoices.length} itemsPerPage={itemsPerPage} onPageChange={handlePageChange}/>
                 }
         </>
     );

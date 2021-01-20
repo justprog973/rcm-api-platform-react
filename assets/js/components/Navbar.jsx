@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { Layout, Menu } from 'antd';
-import { Button } from 'antd';
+import { Button, Layout, Menu } from 'antd';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 import AuthAPI from '../services/authAPI';
@@ -21,7 +20,7 @@ const Navbar = ({history}) => {
       <Layout>
         <Header className="header">
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+          <Menu theme="dark" mode="horizontal">
             {
               isAuthenticated &&
                <>
