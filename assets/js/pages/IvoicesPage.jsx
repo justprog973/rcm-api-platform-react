@@ -3,6 +3,7 @@ import { Button, Card, Input } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import PaginationCustom from '../components/PaginationCustom';
 import invoicesAPI from '../services/invoicesAPI';
 
@@ -37,7 +38,7 @@ const InvoicesPage = ({history}) => {
             const data = await invoicesAPI.findAll();
             setInvoices(data);
         }catch(error){
-            console.log(error.response);
+            toast.error("Erreur lors du chargement des factures !");
         }
     };
 
@@ -97,13 +98,13 @@ const InvoicesPage = ({history}) => {
 
     const handleDelete = async id => {
         const originalInvoices = [...invoices];
-
         setInvoices(invoices.filter( invoice => invoice.id !== id ));
-
         try{
            await invoicesAPI.delete(id);
+           toast.success(`La facture n°${id} à bien été supprimé !`);
         }catch(error){
             console.log(error.response);
+            toast.error(`Une erreur est survenue !`);
             setInvoices(originalInvoices);
         }
     }

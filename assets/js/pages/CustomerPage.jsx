@@ -1,5 +1,7 @@
+import { Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Field from '../components/form/Field';
 import CustomersAPI from '../services/customersAPI';
 
@@ -20,6 +22,8 @@ const CustomerPage = ({match, history}) => {
         email: "",
         company: ""
     });
+
+    const [loading, setLoading] = useState(false);
     
     const [editing,setEditing]  = useState(false);
     
@@ -28,12 +32,17 @@ const CustomerPage = ({match, history}) => {
      * @param {int} id 
      */
     const fetchCustomer = async id => {
-        try{
-            const {firstName, lastName, email, company} = await CustomersAPI.find(id);
-            setCustomer({firstName, lastName, email, company});
-        }catch(error){
-            console.log(error.response);
-            history.replace("/customers");
+        const regexId= /^\d+$/;
+        
+        if(regexId.test(id)){
+            try{
+                const {firstName, lastName, email, company} = await CustomersAPI.find(id);
+                setCustomer({firstName, lastName, email, company});
+            }catch(error){
+                console.log(error.response);
+                toast.error("Erreur lord du chargement du client ! ");
+                history.replace("/customers");
+            }
         }
     }
 
@@ -62,15 +71,20 @@ const CustomerPage = ({match, history}) => {
      */
     const handleSubmit = async (event) =>{
         event.preventDefault();
-
+        setLoading(true);
         try{
+            setErrors({});
+            
            if(editing){
                 await CustomersAPI.update(id, customer);
+                toast.success("Le client a bien été modifié !");
+                setLoading(false);
            }else {
                 await CustomersAPI.create(customer);
+                toast.success("Le client a bien été créer !");
                 history.replace("/customers");
+                setLoading(false);
            }
-            setErrors({});
         }catch({ response }){
             const {violations} = response.data;
             if(violations){
@@ -80,6 +94,8 @@ const CustomerPage = ({match, history}) => {
                 });
                 setErrors(apiErrors);
             }
+            setLoading(false);
+            toast.error("Vous avez des erreurs ! ");
         }
 
     }
@@ -122,7 +138,7 @@ const CustomerPage = ({match, history}) => {
                         placeholde="Entreprise du client"
                         className="last"/>
                     <div className="form-group">
-                        <button type="submit" className="ant-btn ant-btn-primary ant-btn-lg">Enregistrer</button>
+                        <Button loading={loading} type="primary" htmlType="submit" className="button-custom">{ editing ? "Modifier" : "Enregistrer" }</Button>
                         <Link to="/customers" className="ant-btn ant-btn-link">Retour à la liste</Link>
                     </div>
                 </form>

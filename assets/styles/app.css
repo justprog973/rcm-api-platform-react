@@ -205,3 +205,6 @@ input-text:focus{
   align-items: center;
   justify-content: center;
 }
+.darker{
+  background-color: #404040 !important;
+}

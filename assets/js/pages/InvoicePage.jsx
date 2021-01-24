@@ -1,5 +1,7 @@
+import { Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Field from '../components/form/Field';
 import Select from '../components/form/Selecte';
 import CustomerAPI from "../services/customersAPI";
@@ -16,6 +18,8 @@ const InvoicePage = ({history, match}) => {
         customer: "",
         status: "SENT"
     });
+
+    const [loading, setLoading] = useState(false);
 
     const [customers, setCustomers] = useState([]); 
 
@@ -34,6 +38,7 @@ const InvoicePage = ({history, match}) => {
             setCustomers(data);
             if(!invoice.customer) setInvoice({...invoice, customer: data[0].id});
         }catch(error){
+            toast.error("Erreur lors du chargement des clients !");
             history.replace('/invoices');
         }
     }
@@ -47,6 +52,7 @@ const InvoicePage = ({history, match}) => {
             const {amount, status, customer} = await InvoicesAPI.find(id);
             setInvoice({amount, status, customer: customer.id});
         }catch(error){
+            toast.error("La facture demandé n'existe pas ou à été suprimé !");
             history.replace('/invoices');
         }
     }
@@ -82,13 +88,17 @@ const InvoicePage = ({history, match}) => {
      */
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(invoice);
+        setLoading(true);
         try{
             if(editing){
                 await InvoicesAPI.update(id, invoice);
+                toast.success("La facture a bien été modifié !");
+                setLoading(false);
             }else {
                 await InvoicesAPI.create(invoice);
+                toast.success("La facture a bien été créer !");
                 history.replace("/invoices");
+                setLoading(false);
             }
         }catch({ response }){
             const {violations} = response.data;
@@ -99,6 +109,8 @@ const InvoicePage = ({history, match}) => {
                 });
                 setErrors(apiErrors);
             }
+            setLoading(false);
+            toast.error("Vous avez des erreurs !");
         }
     }
 
@@ -124,7 +136,7 @@ const InvoicePage = ({history, match}) => {
                         <option value="CANCELLED">Annulée</option>
                     </Select>
                     <div className="form-group">
-                        <button type="submit" className="ant-btn ant-btn-primary ant-btn-lg">Enregistrer</button>
+                        <Button loading={loading} type="primary" htmlType="submit" className="button-custom">{ editing ? "Modifier" : "Enregistrer" }</Button>
                         <Link to="/invoices" className="ant-btn ant-btn-link">Retour à la liste</Link>
                     </div>
                 </form>

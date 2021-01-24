@@ -2,6 +2,7 @@ import { Button } from 'antd';
 
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Field from '../components/form/Field';
 import AuthContext from '../contexts/AuthContext';
 import AuthAPI from '../services/authAPI';
@@ -37,6 +38,7 @@ const LoginPage = ({history}) => {
             await AuthAPI.authenticate(credentials);
             setError("");
             onLogin(true);
+            toast.success("Vous êtes désormais connecté !");
             history.replace("/customers");
         }catch(error){
             console.log(error.response);

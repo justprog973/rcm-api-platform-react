@@ -1,7 +1,9 @@
-import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined, PlusCircleTwoTone } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Card, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import CardLoader from '../components/loader/CardLoader';
 import PaginationCustom from '../components/PaginationCustom';
 import customersAPI from '../services/customersAPI';
 
@@ -13,17 +15,20 @@ const CustomersPage = ({history}) => {
     const [customers,setCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(false);
 
     /**
      * Get all customers in API 
      */
     const fetchCustomer = async () => {
+        setLoading(true);
         try{
             const data = await customersAPI.findAll();
             setCustomers(data);
-            console.log(data);
+            setLoading(false);
         } catch( error ){
-            console.log(error.response);
+            toast.error("Erreur lors du chargement des clients !");
+            setLoading(false);
         }
     }
     
@@ -33,7 +38,7 @@ const CustomersPage = ({history}) => {
     useEffect(() => fetchCustomer() , []);
 
     /**
-     * Manage the delete the customer
+     * Manage the delete of customer
      * @param { int } id 
      */
     const handleDelete = async id =>{
@@ -43,8 +48,10 @@ const CustomersPage = ({history}) => {
 
         try {
             await customersAPI.delete(id);
+            toast.success(`Le client n°${id} à bien été suprimé !`);
         }catch(error){
             setCustomers(orginalCustomers);
+            toast.error(`Erreur lors de la suppression du client !`);
         }
     }
 
@@ -102,9 +109,9 @@ const CustomersPage = ({history}) => {
                     <Link to="/customers/new" className="ant-btn ant-btn-primary ant-btn-lg">Ajouter un client</Link>
                 </div>
                 <div className="row mb-4">
-                    <div className="col-4">
-                        <Search value={search} onChange={handleSearch} placeholder="input search text" size="middle" 
-                                enterButton={<Button loading={!filteredCustomers.length} icon={<SearchOutlined />} />} />
+                    <div className="col-12">
+                        <Search value={search} onChange={handleSearch} placeholder="input search text" size="large" 
+                                enterButton={<Button loading={loading} icon={<SearchOutlined />} />} />
                     </div>
                 </div>
                 <div className="row">
@@ -121,15 +128,16 @@ const CustomersPage = ({history}) => {
                                     ]}
                                     title={`${customer.firstName} ${customer.lastName}`}
                                     extra={<span className="badge badge-secondary p-2">{customer.invoices.length} </span>}
-                                >
+                                    >
                                     <Meta
-                                        title="Informations "
+                                        title="Informations"
                                         description={descriptionCard(customer)}
                                     />
                                 </Card>
                                 </div>
                                 )
                     }
+                    {loading && <CardLoader/>}
                 </div>
                 {
                     itemsPerPage < filteredCustomers.length &&
