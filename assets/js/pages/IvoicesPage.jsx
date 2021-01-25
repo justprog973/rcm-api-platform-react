@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import CardLoader from '../components/loader/CardLoader';
 import PaginationCustom from '../components/PaginationCustom';
 import invoicesAPI from '../services/invoicesAPI';
 
@@ -30,15 +31,18 @@ const InvoicesPage = ({history}) => {
     const [invoices, setInvoices] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(false);
     
     
     const fetchInvoices = async () => {
-        
+        setLoading(true);
         try{
             const data = await invoicesAPI.findAll();
             setInvoices(data);
+            setLoading(false);
         }catch(error){
             toast.error("Erreur lors du chargement des factures !");
+            setLoading(false);
         }
     };
 
@@ -126,9 +130,9 @@ const InvoicesPage = ({history}) => {
         </div>
 
             <div className="row mb-4">
-                    <div className="col-4">
-                        <Search value={search} onChange={handleSearch} placeholder="input search text" size="middle" 
-                                enterButton={<Button loading={!filteredInvoices.length} icon={<SearchOutlined />} />} />
+                    <div className="col-12">
+                        <Search value={search} onChange={handleSearch} placeholder="input search text" size="large" 
+                                enterButton={<Button loading={loading} icon={<SearchOutlined />} />} />
                     </div>
             </div>
             <div className="row">
@@ -136,7 +140,7 @@ const InvoicesPage = ({history}) => {
                             paginatedInvoices.map( invoice => 
                                     <div className="col-4 mb-3" key={invoice.id}>
                                         <Card
-                                        style={{ width: 300 }}
+                                        style={{ width: "100%" }}
                                         actions={[
                                         <SettingOutlined key="setting" />,
                                         <EditOutlined key="edit" onClick={ () => history.replace(`/invoices/${invoice.id}`) } />,
@@ -155,6 +159,7 @@ const InvoicesPage = ({history}) => {
                                     </div>
                                     )
                         }
+                        {loading && <CardLoader loading={loading} />}
             </div>
                 {
                     itemsPerPage < filteredInvoices.length &&

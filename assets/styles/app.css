@@ -207,4 +207,16 @@ input-text:focus{
 }
 .darker{
   background-color: #404040 !important;
+  height: 60px;
+}
+
+.active {
+  background-color: #0069D9;
+}
+
+.nav-link{
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }

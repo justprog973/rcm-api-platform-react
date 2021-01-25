@@ -1,36 +1,84 @@
 import React from 'react';
-import ContentLoader from 'react-content-loader'
+import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import { Button, Card, Skeleton } from 'antd';
 
-const CardLoader = (props) => {
+const CardLoader = ({loading}) => {
+
     return ( 
-        <ContentLoader viewBox="0 0 1360 900" height={900} width={1360} {...props}>
-            <rect x="30" y="20" rx="0" ry="0" width="130" height="23" />
-            <rect x="30" y="60" rx="0" ry="0" width="200" height="120" />
-            <rect x="30" y="189" rx="0" ry="0" width="200" height="15" />
-            <rect x="30" y="211" rx="0" ry="0" width="140" height="15" />
-            <rect x="243" y="60" rx="0" ry="0" width="200" height="120" />
-            <rect x="243" y="189" rx="0" ry="0" width="200" height="15" />
-            <rect x="243" y="211" rx="0" ry="0" width="140" height="15" />
-            <rect x="455" y="60" rx="0" ry="0" width="200" height="120" />
-            <rect x="455" y="189" rx="0" ry="0" width="200" height="15" />
-            <rect x="455" y="211" rx="0" ry="0" width="140" height="15" />
-            <rect x="667" y="60" rx="0" ry="0" width="200" height="120" />
-            <rect x="667" y="188" rx="0" ry="0" width="200" height="15" />
-            <rect x="667" y="209" rx="0" ry="0" width="140" height="15" />
-            <rect x="30" y="280" rx="0" ry="0" width="130" height="23" />
-            <rect x="30" y="320" rx="0" ry="0" width="200" height="120" />
-            <rect x="30" y="450" rx="0" ry="0" width="200" height="15" />
-            <rect x="30" y="474" rx="0" ry="0" width="140" height="15" />
-            <rect x="243" y="320" rx="0" ry="0" width="200" height="120" />
-            <rect x="455" y="320" rx="0" ry="0" width="200" height="120" />
-            <rect x="667" y="320" rx="0" ry="0" width="200" height="120" />
-            <rect x="243" y="450" rx="0" ry="0" width="200" height="15" />
-            <rect x="455" y="450" rx="0" ry="0" width="200" height="15" />
-            <rect x="667" y="450" rx="0" ry="0" width="200" height="15" />
-            <rect x="243" y="474" rx="0" ry="0" width="140" height="15" />
-            <rect x="455" y="474" rx="0" ry="0" width="140" height="15" />
-            <rect x="667" y="474" rx="0" ry="0" width="140" height="15" />
-        </ContentLoader>
+        <>
+           <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+            <div className="col-xl-4 col-md-6 col-12 mb-3">
+                <Card
+                    style={{ width: "100%" }}
+                    bordered={false}
+                    >
+                    <Skeleton loading={loading}  paragraph={{ rows: 3 }}/>
+                </Card>
+            </div>
+        </>
      );
 }
  

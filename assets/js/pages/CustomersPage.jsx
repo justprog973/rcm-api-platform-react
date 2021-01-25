@@ -1,5 +1,5 @@
-import { DeleteOutlined, EditOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Card, Input } from 'antd';
+import { DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined } from '@ant-design/icons';
+import { Button, Card, Input, Skeleton } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -106,7 +106,7 @@ const CustomersPage = ({history}) => {
     return ( <>
                 <div className="d-flex justify-content-between align-items-center">
                     <h1>Liste des client</h1>
-                    <Link to="/customers/new" className="ant-btn ant-btn-primary ant-btn-lg">Ajouter un client</Link>
+                    <Link to="/customers/new" className="ant-btn ant-btn-primary ant-btn-lg centered-icon">Ajouter un client</Link>
                 </div>
                 <div className="row mb-4">
                     <div className="col-12">
@@ -117,27 +117,30 @@ const CustomersPage = ({history}) => {
                 <div className="row">
                     {
                         paginatedCustomers.map( customer => 
-                                <div className="col-4 mb-3" key={customer.id}>
+                                <div className="col-xl-4 col-md-6 col-12 mb-3" key={customer.id}>
                                     <Card
-                                    style={{ width: 300 }}
+                                    style={{ width: '100%' }}
+                                    bordered={false}
                                     actions={[
-                                    <SettingOutlined key="setting" />,
-                                    <EditOutlined key="edit" onClick={() => { history.replace(`/customers/${customer.id}`)}} />,
+                                    <Button type="primary" shape="circle" icon={<EditOutlined key="edit"/>} onClick={() => { history.replace(`/customers/${customer.id}`)}} />,
                                     <Button disabled={customer.invoices.length > 0} onClick={() => handleDelete(customer.id)}  
                                     icon={<DeleteOutlined key="ellipsis" />} shape="circle" danger/>
                                     ]}
                                     title={`${customer.firstName} ${customer.lastName}`}
                                     extra={<span className="badge badge-secondary p-2">{customer.invoices.length} </span>}
                                     >
+                                    
+                                    <Skeleton loading={loading} >
                                     <Meta
                                         title="Informations"
                                         description={descriptionCard(customer)}
                                     />
+                                    </Skeleton>
                                 </Card>
                                 </div>
                                 )
                     }
-                    {loading && <CardLoader/>}
+                    {loading && <CardLoader loading={loading} />}
                 </div>
                 {
                     itemsPerPage < filteredCustomers.length &&

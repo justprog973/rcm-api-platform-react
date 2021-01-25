@@ -40,23 +40,27 @@ const Navbar = ({history}) => {
                   avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
                 >
               </PageHeader>
-              <nav className="navbar navbar-expand-lg navbar-dark bg-dark darker">
-              <div className="container">
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <nav className="navbar navbar-expand-lg p-0 navbar-dark bg-dark darker">
+                <div className="container">
+                  <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                      <NavLink to={'/customers'} className="nav-link">Clients</NavLink>
-                    </li>
-                    <li className="nav-item">
-                    <NavLink to={'/invoices'} className="nav-link">Factures</NavLink>
-                    </li>
-                  </ul>
+                        <NavLink exact to={'/'} className="nav-link">Home</NavLink>
+                      </li>
+                     {
+                       isAuthenticated && <>
+                      <li className="nav-item">
+                        <NavLink to={'/customers'} className="nav-link">Clients</NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <NavLink to={'/invoices'} className="nav-link">Factures</NavLink>
+                      </li>
+                       </>
+                     }
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            </nav>
+              </nav>
             </>
       );
     }

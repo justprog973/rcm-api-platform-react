@@ -49,7 +49,7 @@ const App = () => {
                         <PrivateRoute exact path="/invoices" component={InvoicesPage}/>
                         <PrivateRoute path="/customers/:id" component={CustomerPage}/>
                         <PrivateRoute exact path="/customers" component={CustomersPage}/>
-                        <Route path="/" component={HomePage}/>
+                        <Route exact path="/" component={HomePage}/>
                     </Switch>
                 </main>
             </HashRouter>
